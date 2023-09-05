@@ -7,11 +7,9 @@ const authenticateUser = async (req, res, next) => {
 
     if (token) {
         // Token exists; use it for authentication
-        console.log("token exists")
-        req.bearerToken = token;
         next();
     } else {
-        // Token doesn't exist; fall back to checking login credentials
+        // Token doesn't exist
         try {
             const authUrl = 'https://qa2.sunbasedata.com/sunbase/portal/api/assignment_auth.jsp';
             const authPayload = {
