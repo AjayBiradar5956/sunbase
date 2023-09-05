@@ -1,16 +1,15 @@
 const axios = require('axios');
-const apiUrl = 'https://qa2.sunbasedata.com/sunbase/portal/api/assignment.jsp';
+const cookie = require('cookie');
 
 module.exports.createSession = function (req, res) {
-    const params = {
-        cmd: 'get_customer_list',
-    };
     const token = req.bearerToken;
     console.log(token);
     const headers = {
         Authorization: `Bearer ${token}`,
     };
-    axios.get(apiUrl, { params, headers })
+    const apiGetUrl = 'https://qa2.sunbasedata.com/sunbase/portal/api/assignment.jsp?cmd=get_customer_list';
+
+    axios.get(apiGetUrl, { headers })
         .then(async (response) => {
             if (response.status == 200) {
                 const customerList = await response.data;
@@ -29,13 +28,10 @@ module.exports.createSession = function (req, res) {
 }
 
 module.exports.delete = async function (req, res) {
+    console.log("delete hit");
     const uuid = req.query.id;
-    const params = {
-        cmd: 'delete',
-        uuid,
-    };
-    const token = req.bearerToken;
-    console.log(token);
+    const cookies = cookie.parse(req.headers.cookie || '');
+    const token = cookies.access_token || '';
     const headers = {
         Authorization: `Bearer ${token}`,
     };
@@ -43,8 +39,10 @@ module.exports.delete = async function (req, res) {
         return res.status(400).json({ message: 'UUID not found' });
     }
 
+    const apiDeleteUrl = `https://qa2.sunbasedata.com/sunbase/portal/api/assignment.jsp?cmd=delete&uuid=${req.query.id}`;
+
     try {
-        await axios(apiUrl, { params, headers })
+        await axios(apiDeleteUrl, { headers })
             .then((response) => {
                 if (response.status === 200) {
                     return res.status(200).json({ message: 'Successfully deleted' });
@@ -67,7 +65,6 @@ module.exports.addPage = function (req, res) {
 }
 
 module.exports.addCustomer = function (req, res) {
-    console.log(req.body);
     const { firstname, lastname, street, address, city, state, email, phone } = req.body;
 
     const customerData = {
@@ -81,26 +78,38 @@ module.exports.addCustomer = function (req, res) {
         phone,
     }
 
-    const params = {
-        cmd: 'create',
-        ...customerData,
-    }
-    const token = req.bearerToken;
-    const header = {
+    const cookies = cookie.parse(req.headers.cookie || '');
+    const token = cookies.access_token || '';
+    console.log("cookie", token);
+
+    // Define the API URL for adding a customer
+    const apiCreateUrl =
+        'https://qa2.sunbasedata.com/sunbase/portal/api/assignment.jsp?cmd=create';
+
+    // Define the headers including the Authorization header
+    const headers = {
         Authorization: `Bearer ${token}`,
-    }
-    axios.post(apiUrl, { params, header })
+    };
+
+    // Define the request body
+    const requestBody = {
+        ...customerData,
+    };
+
+    axios.post(apiCreateUrl, requestBody, { headers })
         .then((response) => {
-            if (response.status === 200) {
-                return res.status(200).json({ message: 'Successfully Updated' });
+            if (response.status === 201) {
+                return res.status(201).json({ message: 'Successfully Created' });
             } else if (response.status === 400) {
-                return res.status(400).json({ message: 'Body is Empty' });
+                return res.status(400).json({ message: 'Bad Request: First Name or Last Name is missing' });
             } else {
-                return res.status(500).json({ message: 'Error updating customer' });
+                console.error('Add Customer API Error:', response.data); // Log the error response
+                return res.status(500).json({ message: 'Error creating customer' });
             }
         })
         .catch((err) => {
-            console.error('Update Customer API Error:', err.message);
+            console.error('Add Customer API Error:', err.message); // Log the Axios error
             return res.status(500).json({ message: 'Internal server error' });
-        })
+        });
+
 }
