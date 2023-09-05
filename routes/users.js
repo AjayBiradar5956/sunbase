@@ -9,5 +9,4 @@ router.post('/addCustomer', authMiddleware.authenticateUser, users_controller.ad
 
 router.get('/addPage', users_controller.addPage);
 
-
 module.exports = router;

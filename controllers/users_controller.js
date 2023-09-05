@@ -27,35 +27,37 @@ module.exports.createSession = function (req, res) {
         })
 }
 
-module.exports.delete = async function (req, res) {
+module.exports.delete = function (req, res) {
     console.log("delete hit");
-    const uuid = req.query.id;
+
     const cookies = cookie.parse(req.headers.cookie || '');
     const token = cookies.access_token || '';
+
     const headers = {
         Authorization: `Bearer ${token}`,
-    };
-    if (!uuid) {
+    }
+
+    const id = req.params.id;
+
+    if (!id) {
         return res.status(400).json({ message: 'UUID not found' });
     }
 
-    const apiDeleteUrl = `https://qa2.sunbasedata.com/sunbase/portal/api/assignment.jsp?cmd=delete&uuid=${req.query.id}`;
+    const apiDeleteUrl = `https://qa2.sunbasedata.com/sunbase/portal/api/assignment.jsp?cmd=delete&uuid=${id}`;
 
-    try {
-        await axios(apiDeleteUrl, { headers })
-            .then((response) => {
-                if (response.status === 200) {
-                    return res.status(200).json({ message: 'Successfully deleted' });
-                } else if (response.status === 400) {
-                    return res.status(400).json({ message: 'UUID not found' });
-                } else {
-                    return res.status(500).json({ message: 'Error deleting customer' });
-                }
-            })
-    } catch (error) {
-        console.error('Delete Customer API Error:', error.message);
-        return res.status(500).json({ message: 'Internal server error' });
-    }
+    axios.post(apiDeleteUrl, {}, { headers })
+        .then((response) => {
+            if (response.status === 200) {
+                return res.status(200).json({ message: 'Successfully deleted' });
+            } else if (response.status === 400) {
+                return res.status(400).json({ message: 'UUID not found' });
+            } else {
+                return res.status(500).json({ message: 'Error deleting customer' });
+            }
+        })
+        .catch((err) => {
+            console.log(err);
+        })
 }
 
 module.exports.addPage = function (req, res) {
@@ -111,5 +113,4 @@ module.exports.addCustomer = function (req, res) {
             console.error('Add Customer API Error:', err.message); // Log the Axios error
             return res.status(500).json({ message: 'Internal server error' });
         });
-
 }

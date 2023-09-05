@@ -49,11 +49,13 @@
                         <%=customer.phone %>
                     </td>
                     <td id="action">
-                        <span>
-                            <a href="/users/delete/?id=<%- customer.uuid %>">
-                                -
-                            </a>
-                        </span>
+                        <form action="/users/delete/<%=customer.uuid %>" method="post">
+                            <span>
+                                <button type="submit">
+                                    -
+                                </button>
+                            </span>
+                        </form>
 
                     </td>
 
