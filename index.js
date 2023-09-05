@@ -3,7 +3,9 @@ const app = express();
 const expressLayouts = require('express-ejs-layouts');
 const port = 8000;
 const authMiddleware = require('./config/authMiddleware');
+const bodyParser = require('body-parser');
 
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.urlencoded());
 
 app.use(express.static('assets'));

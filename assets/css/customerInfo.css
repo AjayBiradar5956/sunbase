@@ -1,0 +1,22 @@
+#action {
+    display: flex;
+    width: 80%;
+    justify-content: space-between;
+}
+
+a {
+    border: 0px;
+    color: black;
+}
+
+a i:hover {
+    transform: scale(1.5);
+    color: red;
+}
+
+#addCustomer {
+    border-radius: 5px;
+    background-color: darkorchid;
+    border: 1px solid red;
+    color: white;
+}

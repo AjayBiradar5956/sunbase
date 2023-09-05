@@ -1,6 +1,11 @@
 <link rel="stylesheet" href="/css/customerInfo.css">
 <center>
     <h1>Customer List</h1>
+    <div>
+        <a href="/users/addPage">
+            <button type="button" class="btn btn-primary">Add Customer</button>
+        </a>
+    </div>
     <hr>
     <table class="table">
         <thead>
@@ -43,6 +48,15 @@
                     <td>
                         <%=customer.phone %>
                     </td>
+                    <td id="action">
+                        <span>
+                            <a href="/users/delete/?id=<%- customer.uuid %>">
+                                -
+                            </a>
+                        </span>
+
+                    </td>
+
                 </tr>
                 <% }) %>
 

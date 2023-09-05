@@ -22,11 +22,6 @@ const authenticateUser = async (req, res, next) => {
     }
 }
 
-const checkAuthentication = function (req, res, next) {
-    if (req.isAuthenticated()) {
-        return next();
-    }
-    return res.redirect('/');
-}
 
-module.exports = { authenticateUser, checkAuthentication };
+
+module.exports = { authenticateUser };
