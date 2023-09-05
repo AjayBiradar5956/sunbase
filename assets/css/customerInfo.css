@@ -4,12 +4,13 @@
     justify-content: space-between;
 }
 
-a {
+button {
     border: 0px;
     color: black;
+    background-color: inherit;
 }
 
-a i:hover {
+button i:hover {
     transform: scale(1.5);
     color: red;
 }
