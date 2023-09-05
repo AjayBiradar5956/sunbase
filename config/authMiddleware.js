@@ -4,12 +4,11 @@ const cookie = require('cookie');
 const authenticateUser = async (req, res, next) => {
     // Check if there's a token in the cookie
     const token = req.cookies.access_token;
-
     if (token) {
         // Token exists; use it for authentication
         next();
     } else {
-        // Token doesn't exist
+        // Token doesn't exist - create a new token and store in cookie
         try {
             const authUrl = 'https://qa2.sunbasedata.com/sunbase/portal/api/assignment_auth.jsp';
             const authPayload = {

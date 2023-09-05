@@ -2,6 +2,22 @@ const axios = require('axios');
 const cookie = require('cookie');
 const api = 'https://qa2.sunbasedata.com/sunbase/portal/api/assignment.jsp?';
 
+module.exports.addPage = function (req, res) {
+    return res.render('addCustomer', {
+        title: "Add Customer",
+        addPage: true,
+    })
+}
+
+module.exports.updatePage = function (req, res) {
+    const id = req.params.id;
+    return res.render('addCustomer', {
+        title: "Add Customer",
+        addPage: false,
+        id,
+    })
+}
+
 module.exports.createSession = function (req, res) {
     const cookies = cookie.parse(req.headers.cookie || '');
     const token = cookies.access_token || '';
@@ -47,22 +63,6 @@ module.exports.delete = function (req, res) {
         })
 }
 
-module.exports.addPage = function (req, res) {
-    return res.render('addCustomer', {
-        title: "Add Customer",
-        addPage: true,
-    })
-}
-
-module.exports.updatePage = function (req, res) {
-    const id = req.params.id;
-    return res.render('addCustomer', {
-        title: "Add Customer",
-        addPage: false,
-        id,
-    })
-}
-
 module.exports.addCustomer = function (req, res) {
     const cookies = cookie.parse(req.headers.cookie || '');
     const token = cookies.access_token || '';
@@ -105,7 +105,6 @@ module.exports.addCustomer = function (req, res) {
             return res.status(500).json({ message: 'Internal server error' });
         });
 }
-
 
 module.exports.modifyCustomer = function (req, res) {
     const cookies = cookie.parse(req.headers.cookie || '');
