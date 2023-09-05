@@ -1,0 +1,83 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+#details {
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+input:focus {
+    outline: none;
+    padding-bottom: 10px;
+}
+
+#demo-div {
+    border-radius: 10px;
+    width: 30vw;
+    height: 30vh;
+    text-align: center;
+    margin-right: 50px;
+    color: black;
+    padding: 10px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 1.2rem;
+}
+
+#inner-div {
+    background-color: white;
+    border-radius: 10px;
+    width: 30vw;
+    height: 80vh;
+    text-align: center;
+    align-self: center;
+    margin-right: 50px;
+    color: black;
+    padding: 10px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 1.2rem;
+}
+
+div input {
+    border: none;
+    border-bottom: 2px solid lightgray;
+    font-size: 0.9rem;
+    padding-bottom: 5px;
+    width: 300px;
+}
+
+h1 {
+    margin-top: 25px;
+}
+
+button {
+    width: 300px;
+    height: 35px;
+    font-size: 1rem;
+    background-color: black;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button a {
+    color: black;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 0.9rem;
+    padding: 10px;
+}
+
+button:focus {
+    background-color: lightsalmon;
+    color: black;
+}
+
+button:hover {
+    background-color: white;
+    color: black;
+}
