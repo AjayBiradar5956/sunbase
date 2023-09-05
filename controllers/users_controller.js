@@ -19,8 +19,7 @@ module.exports.updatePage = function (req, res) {
 }
 
 module.exports.createSession = function (req, res) {
-    const cookies = cookie.parse(req.headers.cookie || '');
-    const token = cookies.access_token || '';
+    const token = req.bearerToken;
     const params = 'cmd=get_customer_list';
     const apiGetUrl = `${api}${params}`;
 
@@ -44,9 +43,9 @@ module.exports.createSession = function (req, res) {
 module.exports.delete = function (req, res) {
     const cookies = cookie.parse(req.headers.cookie || '');
     const token = cookies.access_token || '';
+    const id = req.params.id;
     const params = `cmd=delete&uuid=${id}`;
     const apiDeleteUrl = `${api}${params}`;
-    const id = req.params.id;
 
     axios.post(apiDeleteUrl, {}, { headers: { Authorization: `Bearer ${token}` } })
         .then((response) => {
@@ -109,10 +108,10 @@ module.exports.addCustomer = function (req, res) {
 module.exports.modifyCustomer = function (req, res) {
     const cookies = cookie.parse(req.headers.cookie || '');
     const token = cookies.access_token || '';
+    const id = req.params.id;
     const params = `cmd=update&uuid=${id}`;
     const apiModifyUrl = `${api}${params}`;
 
-    const id = req.params.id;
     const { first_name, last_name, street, address, city, state, email, phone } = req.body;
 
     const customerData = {

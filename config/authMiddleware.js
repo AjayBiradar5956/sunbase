@@ -6,6 +6,7 @@ const authenticateUser = async (req, res, next) => {
     const token = req.cookies.access_token;
     if (token) {
         // Token exists; use it for authentication
+        req.bearerToken = token;
         next();
     } else {
         // Token doesn't exist - create a new token and store in cookie
@@ -29,6 +30,7 @@ const authenticateUser = async (req, res, next) => {
                 });
                 res.setHeader('Set-Cookie', tokenCookie);
                 req.bearerToken = token;
+                console.log
                 next();
             } else {
                 res.status(401).json({ message: 'Authentication Failed' });
