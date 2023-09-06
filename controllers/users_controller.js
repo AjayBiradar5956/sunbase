@@ -18,7 +18,7 @@ module.exports.updatePage = function (req, res) {
     })
 }
 
-module.exports.createSession = function (req, res) {
+module.exports.getCustomer = function (req, res) {
     const token = req.bearerToken;
     const params = 'cmd=get_customer_list';
     const apiGetUrl = `${api}${params}`;
@@ -36,11 +36,12 @@ module.exports.createSession = function (req, res) {
             }
         })
         .catch((err) => {
-            console.log(err);
+            console.log("failed getting customer info", err);
+            res.status(500).json({ message: "Internal Server Error" });
         })
 }
 
-module.exports.delete = function (req, res) {
+module.exports.deleteCustomer = function (req, res) {
     const cookies = cookie.parse(req.headers.cookie || '');
     const token = cookies.access_token || '';
     const id = req.params.id;
@@ -58,7 +59,8 @@ module.exports.delete = function (req, res) {
             }
         })
         .catch((err) => {
-            console.log(err);
+            console.log("failed Deleting customer", err);
+            res.status(500).json({ message: "Internal Server Error" });
         })
 }
 
@@ -81,9 +83,7 @@ module.exports.addCustomer = function (req, res) {
         phone,
         uuid,
     }
-    console.log("Add handler", customerData);
 
-    // Define the request body
     const requestBody = {
         ...customerData,
     };
@@ -100,7 +100,7 @@ module.exports.addCustomer = function (req, res) {
             }
         })
         .catch((err) => {
-            console.error('Add Customer API Error:', err.message); // Log the Axios error
+            console.error('Add Customer API Error:', err.message);
             return res.status(500).json({ message: 'Internal server error' });
         });
 }
@@ -125,11 +125,11 @@ module.exports.modifyCustomer = function (req, res) {
         phone,
         uuid: req.params.id,
     }
-    console.log("Modify handler", customerData);
 
     const requestBody = {
         ...customerData,
     }
+
     axios.post(apiModifyUrl, requestBody, { headers: { Authorization: `Bearer ${token}` } })
         .then((response) => {
             if (response.status == 200) {

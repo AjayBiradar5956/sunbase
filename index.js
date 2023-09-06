@@ -1,12 +1,10 @@
 const express = require("express");
 const app = express();
-const expressLayouts = require('express-ejs-layouts');
 const port = 8000;
+const expressLayouts = require('express-ejs-layouts');
 const authMiddleware = require('./config/authMiddleware');
-const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 
-app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.urlencoded());
 
 app.use(express.static('assets'));
